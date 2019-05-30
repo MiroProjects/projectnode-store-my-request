@@ -34,3 +34,7 @@ myDb.insert(event2);
 
 var arr = [event3, event4];
 myDb.insertAll(arr);
+myDb.getAll();
+console.log(arr);
+console.log(arr[0]);
+console.log(arr[0].name);

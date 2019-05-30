@@ -2,14 +2,19 @@ var fs = require('fs');
 var os = require('os');
 var date = new Date();
 const folder = "Saves";
+const separator = os.EOL;
 
 var db = function(name, options){
     this.name = name;
+    this.path = `./${folder}/${this.name}`;
     if(!options){
         options = {};
+    }
+    if(!options.overrideExisting){
         options.overrideExisting = false;
     }
-    createDb(name, options.overrideExisting);
+    this.options = options;
+    createDb(this);
 }
 
 var getUniqueId = function(){
@@ -23,19 +28,40 @@ var addUniqueId = function(obj){
 db.prototype.insert = function(obj){
     addUniqueId(obj);
     var json = JSON.stringify(obj);
-    saveToDb(this.name, json + os.EOL);
+    saveToDb(this.path, json + separator);
 }
 
 db.prototype.insertAll = function(arr){
     arr.forEach(obj => {
         addUniqueId(obj);
         var json = JSON.stringify(obj);
-        saveToDb(this.name, json + os.EOL); 
+        saveToDb(this.path, json + separator); 
     });
 }
 
-var saveToDb = (fileName, data) => {
-    var path = `./${folder}/${fileName}`;
+db.prototype.getAll = function () {
+    fs.readFile(this.path, 'utf8', (err, data) => {
+        if(!err){
+            var jsonArr = data.split(separator);
+            //Remove the last separator
+            jsonArr.pop();
+            return parseJsonArray(jsonArr);
+
+        } else{
+            console.log(`An error occured: ${err}`);
+        }
+    });
+}
+
+var parseJsonArray = (jsonArr) => {
+    var jsArray = [];
+    jsonArr.forEach((jsonObject) => {
+        jsArray.push(JSON.parse(jsonObject));
+    });
+    return jsArray;
+};
+
+var saveToDb = (path, data) => {
     fs.appendFile(path, data, function (err) {
         if (err) {
             console.log('Not saved!');
@@ -52,13 +78,12 @@ var createFolder = () => {
     }
 }
 
-var createDb = (fileName, overrideFile) => {
+var createDb = (db) => {
     createFolder();
-    var path = `./${folder}/${fileName}`;
     //By default do not override the file
     var flag;
-    overrideFile ? flag = 'w' : flag = 'a';
-    fs.closeSync(fs.openSync(path, flag));
+    db.options.overrideExisting ? flag = 'w' : flag = 'a';
+    fs.closeSync(fs.openSync(db.path, flag));
 }
 
 module.exports = db;
