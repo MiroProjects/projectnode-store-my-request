@@ -39,13 +39,14 @@ db.prototype.insertAll = function(arr){
     });
 }
 
-db.prototype.getAll = function () {
+db.prototype.getAll = function (callback) {
     fs.readFile(this.path, 'utf8', (err, data) => {
         if(!err){
             var jsonArr = data.split(separator);
             //Remove the last separator
             jsonArr.pop();
-            return parseJsonArray(jsonArr);
+            var jsArray = parseJsonArray(jsonArr);
+            callback(jsArray);
 
         } else{
             console.log(`An error occured: ${err}`);
