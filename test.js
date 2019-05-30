@@ -29,14 +29,20 @@ var event4 = {
     day: "Monday"
 }
 
-myDb.insert(event);
-myDb.insert(event2);
+//myDb.insert(event);
+//myDb.insert(event2);
 
 var arr = [event3, event4];
-myDb.insertAll(arr);
+//myDb.insertAll(arr);
 
 myDb.getAll((data) => {
     console.log(data);
     console.log(data[0]);
     console.log(data[0].name);
+});
+
+myDb.get((obj) => {
+    return obj.name == "Party event";
+}, (res) => {
+    console.log(res); 
 });

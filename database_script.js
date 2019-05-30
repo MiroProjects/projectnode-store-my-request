@@ -39,18 +39,27 @@ db.prototype.insertAll = function(arr){
     });
 }
 
-db.prototype.getAll = function (callback) {
+db.prototype.getAll = function (result) {
     fs.readFile(this.path, 'utf8', (err, data) => {
         if(!err){
             var jsonArr = data.split(separator);
             //Remove the last separator
             jsonArr.pop();
             var jsArray = parseJsonArray(jsonArr);
-            callback(jsArray);
-
+            result(jsArray);
         } else{
             console.log(`An error occured: ${err}`);
         }
+    });
+}
+
+db.prototype.get = function (filter, result) {
+    this.getAll((jsArray) => {
+        jsArray.forEach((jsObject) => {
+            if(filter(jsObject)){
+                result(jsObject);
+            }
+        });
     });
 }
 
