@@ -79,9 +79,26 @@ Database.prototype.insert = function(obj, table){
     if(table.bufferArray.length >= 5){
         this.flush(table);
     }
+
     addUniqueId(obj);
     table.bufferArray.push(obj);
     table.savedItemsArray.push(obj);
+}
+
+Database.prototype.insertCollection = function(collection, table){
+    if(!Array.isArray(collection)){
+        console.log("Provide an array of objects to save");
+        return;
+    }
+
+    if(!(table && typeof table === 'object')){
+        console.log("Provide correct table to save the object");
+        return;
+    }
+
+    for (let index = 0; index < collection.length; index++) {
+        this.insert(collection[index], table);
+    }
 }
 
 var insertAll = function(table){

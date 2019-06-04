@@ -54,13 +54,9 @@ eventsDatabase.insert(event, eventsTable);
 eventsDatabase.insert(event2, eventsTable);
 eventsDatabase.flush(eventsTable);
 
-//insert in the second table using autoflush
-eventsDatabase.insert(event, eventsTable2);
-eventsDatabase.insert(event2, eventsTable2);
-eventsDatabase.insert(event3, eventsTable2);
-eventsDatabase.insert(event4, eventsTable2);
-eventsDatabase.insert(event5, eventsTable2);
-eventsDatabase.insert(event6, eventsTable2);
+//insert a collection in the second table using autoflush
+var arr = [event, event2, event3, event4, event5, event6];
+eventsDatabase.insertCollection(arr, eventsTable2);
 
 //testing getAll
 var get1 = eventsDatabase.getAll(eventsTable2);
