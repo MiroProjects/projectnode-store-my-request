@@ -1,0 +1,29 @@
+{
+  "name": "projectnode-store-my-request",
+  "version": "1.0.0",
+  "description": "A package containing a database module for creating and managing text files in many datbases(folders)",
+  "main": "script.js",
+  "scripts": {
+    "test": "node script"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MiroProjects/projectnode-store-my-request.git"
+  },
+  "keywords": [
+    "database",
+    "files",
+    "folders",
+    "server"
+  ],
+  "author": "Miroslav Terziyski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MiroProjects/projectnode-store-my-request/issues"
+  },
+  "homepage": "https://github.com/MiroProjects/projectnode-store-my-request#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
